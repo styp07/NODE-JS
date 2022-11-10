@@ -1,22 +1,16 @@
-const { table } = require('console');
-const fs = require('fs');
+const {crearArchivo} = require('./hellpers/multiplicar');
+const argv = require('./config/yargs');
 
 console.clear();
-console.log('=================')
-const num = 5;
-console.log('   Tabla del 5   ')
-console.log('=================')
 
-let salida = '';
+// console.log(process.argv);
+// console.log(argv)
+// console.log('base: yargs', argv.b)
 
-for (let i = 1; i < 11; i++) {
-    salida +=`    ${num} + ${i} = ${num*i}\n`
-}
+// const [,,arg3 = 'base=5'] = process.argv;
+// const[,base = 5] = arg3.split('=');
 
-console.log(salida)
-
-fs.writeFile('tabla-5.txt', salida, (err)=>{
-    if (err) throw err;
-
-    console.log('Tabla 5 creada')
-})
+// console.log(argv.b)
+crearArchivo(argv.b, argv.l, argv.h)
+    .then( nombreArchivo => console.log(nombreArchivo, 'creada'.gray))
+    .catch( err => console.log(err));
