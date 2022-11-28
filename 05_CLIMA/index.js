@@ -1,11 +1,14 @@
+  
+
 import { inquirerMenu, leerInput, pausa } from "./helpers/inquirer.js"
 import { Buscquedas } from "./models/busquedas.js";
 
+console.log(process.env)
 
 const main = async() =>{
 
     let opt;
-
+ 
     const busquedas = new Buscquedas();
 
 
@@ -17,8 +20,9 @@ const main = async() =>{
             case 1: //Busqueda
                 //Mostrar lugar
 
-                const lugar = await leerInput(`Ciudad: `.yellow);
-                console.log(lugar);
+                const termino = await leerInput(`Ciudad: `.yellow);
+                await busquedas.ciudad(termino);
+                // console.log(lugares);
                 
                 //Buscar los lugares
                 //Selección de opción

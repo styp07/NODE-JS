@@ -1,3 +1,7 @@
+import axios, {isCancel, AxiosError} from 'axios'
+import * as dotenv from 'dotenv';// see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
+
 class Buscquedas{
     historial = ['Tegusigalpa', 'Madrid', 'Bogota']
 
@@ -7,9 +11,9 @@ class Buscquedas{
 
     async ciudad(lugar = ''){
         //Petición HTTP
-        console.log(lugar);
-        
-        return []; //Retornar los lugares
+        const resp = await axios.get('https://reqres.in/api/users?page=2');
+        console.log(resp.data);
+        return []; //Retornar los lugares   
     }
 
 }
