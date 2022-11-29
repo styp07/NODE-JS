@@ -1,6 +1,4 @@
 import axios, {isCancel, AxiosError} from 'axios'
-import * as dotenv from 'dotenv';// see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-dotenv.config();
 
 class Buscquedas{
     historial = ['Tegusigalpa', 'Madrid', 'Bogota']
@@ -11,8 +9,8 @@ class Buscquedas{
 
     get paramsMapbox(){
         return {
+            'access_token': process.env.MAPBOX_KEY,
             'language':'es',
-            'access_token':'pk.eyJ1Ijoic3R5cDA3IiwiYSI6ImNsYXp5dG1wOTB5bXMzb205MHZkb2hiMmoifQ.joyzFmPgw1DgV0YFUICoDA',
             'limt': 5
         }
     }
@@ -32,8 +30,13 @@ class Buscquedas{
                     "accept-encoding": null
                 }
             });
-            console.log(resp.data);
-            return []; //Retornar los lugares               
+            return resp.data.features.map(lugar =>({
+                id: lugar.id,
+                nombre: lugar.place_name,
+                lng: lugar.center[0],
+                lat: lugar.center[1]
+            }));
+             //Retornar los lugares               
         } catch (error) {
             return[];
         }
