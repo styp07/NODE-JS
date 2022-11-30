@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';// see https://github.com/motdotla/dotenv#how-d
 dotenv.config();  
 
 import { inquirerMenu, leerInput, listarLugares, pausa } from "./helpers/inquirer.js"
-import { Buscquedas } from "./models/busquedas.js";
+import { Busquedas } from "./models/busquedas.js";
 
 //console.log(process.env.MAPBOX_KEY);
 
@@ -10,7 +10,7 @@ const main = async() =>{
 
     let opt;
  
-    const busquedas = new Buscquedas();
+    const busquedas = new Busquedas();
 
 
     do {
@@ -30,22 +30,34 @@ const main = async() =>{
                 //Buscar los lugares
 
                 const idSelec = await listarLugares(lugares);
+                if (idSelec === '0');
+
+                //
 
                 const lugarSelec = lugares.find(l => l.id === idSelec);
+
+                const climaLugar = await busquedas.climaLugar( lugarSelec.lat, lugarSelec.lng );
+
+                busquedas.agregarHistorial(lugarSelec.nombre);
 
                 //Selección de opción
                 //Datos del clima
                 //Mostrar resultados
+                console.clear();
                 console.log(`\nInformación de la ciudad\n`.yellow);
                 console.log(`Ciudad: ${lugarSelec.nombre}`);
                 console.log(`Lat: ${lugarSelec.lat}`);
                 console.log(`Lng: ${lugarSelec.lng}`);
-                console.log(`Temperatura: `);
-                console.log(`Minima: `);
-                console.log(`Maxima: `);
+                console.log(`Temperatura: ${climaLugar.temp}`);
+                console.log(`Minima: ${climaLugar.min}`);
+                console.log(`Maxima: ${climaLugar.max}`);
+                console.log(`¿Como esta el clima?: ${climaLugar.desc}`)
                 break;
             case 2:
-                console.log({opt})
+                busquedas.historialCapitalizado.forEach((lugar,i) =>{
+                    const idx = `${i+1}`.yellow
+                    console.log(`${idx} ${lugar}`)
+                })
                 break;
             case 0:
                 
