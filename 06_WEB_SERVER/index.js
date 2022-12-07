@@ -1,22 +1,27 @@
-import http from 'http';
+import express from 'express';
+import path from 'path';
+import {fileURLToPath} from 'url';
+const app = express()
 
-http.createServer((req, res) =>{
+// servir contenido estatico
 
-    console.log(req);
+const __filename = fileURLToPath(import.meta.url);
 
-    res.setHeader('Content-Disposition', 'attachment; filename=lista.csv');
-    res.writeHead(200, {'Content-Type': 'application/csv'});
+// 👇️ "/home/john/Desktop/javascript"
+const __dirname = path.dirname(__filename);
 
-    res.write('id, nombre\n');
-    res.write('1, Jairo\n');
-    res.write('2, Tomas\n');
-    res.write('3, Karla\n');
-    res.write('4, Styp\n');
+app.use(express.static('public'))
 
-    res.end();
+app.get('/generic', function (req, res) {
+    res.sendFile(__dirname + '/public/generic.html')
+  })
 
-})
+app.get('/elements', function (req, res) {
+    res.sendFile(__dirname + '/public/elements.html')
+  })
 
-.listen( 8080 );
-
-console.log('Escuchando el puerto ', 8080)
+app.get('*', function (req, res) {
+    res.sendFile( __dirname + '/public/404.html')
+  })
+  
+app.listen(8080) 
